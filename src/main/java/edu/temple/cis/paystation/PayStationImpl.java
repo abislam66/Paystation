@@ -28,9 +28,13 @@ public class PayStationImpl implements PayStation {
 
     // Constructor initializes instance variables
     public PayStationImpl(){
+        this(new Linear1RateStrategy());
+    }
+
+    public PayStationImpl(RateStrategy rateStrategy){
         insertedSoFar = timeBought = totalMoney = 0;
         coinMap = new HashMap<>();
-        rateStrategy = new Linear1RateStrategy();
+        this.rateStrategy = rateStrategy;
     }
     
     @Override
@@ -55,11 +59,6 @@ public class PayStationImpl implements PayStation {
 
         insertedSoFar += coinValue;
         timeBought = rateStrategy.calculateTime(insertedSoFar);
-        if (timeBought==0){
-            System.out.println("Its free for today");
-        }else{
-            System.out.println("You bought " + timeBought + " minutes");
-        }
     }
 
     @Override

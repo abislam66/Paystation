@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PayStation — TDD + Strategy Pattern in Java</title>
+  <meta name="description" content="A parking pay station built test-first in Java, running live in your browser." />
+  <script src="https://cjrtnc.leaningtech.com/4.3/loader.js"></script>
+  <style>
+    :root { --bg:#0f1115; --panel:#171a21; --text:#e8eaed; --muted:#9aa0a6; --accent:#4ade80; --line:#2a2f3a; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text);
+           font:16px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+    main { max-width:1040px; margin:0 auto; padding:40px 20px 60px; }
+    h1 { font-size:2rem; margin:0 0 6px; }
+    .sub { color:var(--muted); margin:0 0 28px; }
+    .grid { display:grid; grid-template-columns: 1fr 300px; gap:24px; align-items:start; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+    #app { position:relative; width:100%; height:720px; background:#000; border:1px solid var(--line);
+           border-radius:10px; overflow:hidden; }
+    #loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+               color:var(--accent); font-family:ui-monospace, monospace; pointer-events:none; }
+    aside { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:18px 20px; }
+    aside h2 { font-size:1rem; margin:0 0 10px; }
+    aside ol, aside ul { padding-left:18px; margin:0 0 16px; }
+    table { width:100%; border-collapse:collapse; font-size:.85rem; }
+    td { padding:4px 0; border-bottom:1px solid var(--line); vertical-align:top; }
+    td:first-child { color:var(--accent); padding-right:8px; white-space:nowrap; }
+    a { color:var(--accent); }
+    footer { margin-top:28px; color:var(--muted); font-size:.85rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>PayStation</h1>
+  <p class="sub">A parking meter built test-first in Java — this is the real Swing app, running in your browser on a WebAssembly JVM.</p>
+
+  <div class="grid">
+    <div id="app"><div id="loading">Booting the JVM… (first load takes a few seconds)</div></div>
+
+    <aside>
+      <h2>Try it</h2>
+      <ol>
+        <li>Insert a few coins.</li>
+        <li>Hit <b>Buy Ticket</b> for a receipt, or <b>Cancel</b> to get coins back.</li>
+        <li>In the admin panel, <b>Change Rate Strategy</b> to another town and watch the price change for coins already inserted.</li>
+      </ol>
+      <h2>Towns &amp; rates</h2>
+      <table>
+        <tr><td>Alphatown</td><td>2 min per 5¢</td></tr>
+        <tr><td>Betatown</td><td>Progressive: cheaper first hour, pricier after</td></tr>
+        <tr><td>Gammatown</td><td>Linear on weekends, progressive on weekdays</td></tr>
+        <tr><td>Deltatown</td><td>1 min per 5¢</td></tr>
+        <tr><td>Omegatown</td><td>Free on weekends</td></tr>
+      </table>
+      <p style="margin-top:16px"><a href="https://github.com/abislam66/paystation">Source &amp; tests on GitHub →</a></p>
+    </aside>
+  </div>
+
+  <footer>Built with Java, Swing, and JUnit. Based on the PayStation case study from H. B. Christensen, <i>Flexible, Reliable Software</i>. Browser runtime: CheerpJ.</footer>
+</main>
+
+<script>
+  (async function () {
+    await cheerpjInit({ version: 8 });
+    const app = document.getElementById("app");
+    cheerpjCreateDisplay(-1, -1, app);
+    document.getElementById("loading").remove();
+    await cheerpjRunJar("/app/paystation.jar");
+  })();
+</script>
+</body>
+</html>

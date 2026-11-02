@@ -1,21 +1,18 @@
 package edu.temple.cis.paystation;
 
-import java.util.Calendar;
+import java.time.Clock;
 
-public class Alternating2RateStrategy implements RateStrategy {
-        @Override
-        public int calculateTime(int amountInserted) {
-            Calendar cal = Calendar.getInstance();
-            int day = cal.get(Calendar.DAY_OF_WEEK);
-            if(day == Calendar.SUNDAY || day == Calendar.SATURDAY){
-                return 0;
-            }else{
-                RateStrategy strategy = new Linear1RateStrategy();
-                return strategy.calculateTime(amountInserted);
-            }
+/**
+ * Omegatown: parking is free on weekends, Linear1 on weekdays.
+ */
+public class Alternating2RateStrategy extends AlternatingRateStrategy {
 
-        }
-
+    public Alternating2RateStrategy() {
+        this(Clock.systemDefaultZone());
     }
 
-
+    /** @param clock the clock used to decide weekday vs. weekend (inject a fixed clock in tests) */
+    public Alternating2RateStrategy(Clock clock) {
+        super(clock, amountInserted -> 0, new Linear1RateStrategy());
+    }
+}
